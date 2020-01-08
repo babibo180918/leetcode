@@ -1,30 +1,24 @@
 class State(object):
 
-    def __init__(self, G, P, group, profit):
-        self.G = G
-        self.P = P
-        self.group = group
-        self.profit = profit 
-        self.curgroup = 0
-        self.curprofit = 0
+    G = 0
+    P = 0
+    group = []
+    profit = []
 
-    def addCrime(self, groupsize, profit):
-        self.curgroup += groupsize
-        self.curprofit += profit
+    def __init__(self, index, curgroup, curprofit):
+        self.index = index
+        self.curgroup = curgroup 
+        self.curprofit = curprofit 
 
     def checkFeasible(self):
-        return self.curgroup <= self.G and self.curprofit >= self.P
+        return self.curgroup <= State.G and self.curprofit >= State.P
 
     def countFeasibleState(self):
-        if len(self.group) == 0:
+        if self.index == len(State.group):
             return (self.checkFeasible() and 1) or 0
         else:
-            leftState = State(self.G, self.P, self.group[1:], self.profit[1:])
-            leftState.curgroup = self.curgroup
-            leftState.curprofit = self.curprofit
-            rightState = State(self.G, self.P, self.group[1:], self.profit[1:])
-            rightState.curgroup = self.curgroup + self.group[0]
-            rightState.curprofit = self.curprofit + self.profit[0]
+            leftState = State(self.index + 1, self.curgroup, self.curprofit)
+            rightState = State(self.index + 1, self.curgroup + State.group[self.index], self.curprofit + State.profit[self.index])
             return leftState.countFeasibleState() + rightState.countFeasibleState()
 
 class Solution(object):
@@ -36,7 +30,11 @@ class Solution(object):
         :type profit: List[int]
         :rtype: int
         """
-        state = State(G, P, group, profit)
+        State.G = G
+        State.P = P
+        State.group = group
+        State.profit = profit
+        state = State(0, 0, 0)
         return state.countFeasibleState()
 
 sol = Solution()
