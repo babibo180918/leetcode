@@ -16,6 +16,8 @@ class State(object):
     def countFeasibleState(self):
         if self.index == len(State.group):
             return (self.checkFeasible() and 1) or 0
+        elif self.curgroup > State.G:
+            return 0
         else:
             leftState = State(self.index + 1, self.curgroup, self.curprofit)
             rightState = State(self.index + 1, self.curgroup + State.group[self.index], self.curprofit + State.profit[self.index])
