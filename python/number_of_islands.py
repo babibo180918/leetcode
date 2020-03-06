@@ -2,6 +2,7 @@ class UnionFind(object):
 
     def __init__(self, size):
         self.ids = [-1 for i in range(size)]
+        self.weights = [1 for i in range(size)]
 
     def root(self, index):
         while self.ids[index] != -1:
@@ -12,7 +13,12 @@ class UnionFind(object):
         root_to = self.root(to_idx)
         root_from = self.root(from_idx)
         if root_to != root_from:
-            self.ids[root_to] = root_from 
+            if self.weights[root_to] > self.weights[root_from]:
+                self.ids[root_from] = root_to 
+                self.weights[root_to] += self.weights[root_from]
+            else:
+                self.ids[root_to] = root_from
+                self.weights[root_from] += self.weights[root_to]
             return True
         return False
 
