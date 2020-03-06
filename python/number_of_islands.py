@@ -19,14 +19,10 @@ class Solution(object):
                     total += 1
                     cur_root = self.root(i * cols + j)
                     if j < cols - 1 and grid[i][j + 1] == '1':
-                        root_right = self.root(i * cols + j + 1)
-                        if cur_root != root_right:
-                            self.union(i * cols + j, i * cols + j + 1)
+                        if self.union(i * cols + j, i * cols + j + 1):
                             union_count += 1
                     if i < rows - 1 and grid[i + 1][j] == '1':
-                        root_below = self.root((i + 1) * cols + j)
-                        if cur_root != root_below:
-                            self.union(i * cols + j, (i + 1) * cols + j)
+                        if self.union(i * cols + j, (i + 1) * cols + j):
                             union_count += 1
 
         return total - union_count
@@ -39,7 +35,10 @@ class Solution(object):
     def union(self, from_idx, to_idx):
         root_to = self.root(to_idx)
         root_from = self.root(from_idx)
-        self.ids[root_to] = root_from 
+        if root_to != root_from:
+            self.ids[root_to] = root_from 
+            return True
+        return False
 
 
 sol = Solution()
