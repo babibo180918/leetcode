@@ -38,7 +38,8 @@ class Solution(object):
 
     def union(self, from_idx, to_idx):
         root_to = self.root(to_idx)
-        self.ids[root_to] = from_idx
+        root_from = self.root(from_idx)
+        self.ids[root_to] = root_from 
 
 
 sol = Solution()
